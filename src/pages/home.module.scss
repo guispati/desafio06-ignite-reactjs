@@ -1,0 +1,54 @@
+.contentContainer {
+    max-width: 1120px;
+    margin:0 auto;
+    padding: 0 2rem;
+    height: calc(100vh - 5rem);
+}
+
+.listPosts {
+    max-width: 700px;
+
+    .post {
+        h1 {
+            font-size: 1.75rem;
+            font-weight: bold;
+        }
+    
+        h2 {
+            margin-top: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: normal;
+            color: var(--gray-300);
+        }
+    
+        .info {
+            display: flex;
+            gap:1.5rem;
+    
+            span {
+                margin-top: 1.5625rem;
+                color: var(--gray-400);
+                font-size: 0.875rem;
+                display: flex;
+                align-items: center;
+                svg  {
+                    font-size: 1rem;
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+
+        & + .post {
+            margin-top: 3.125rem;
+        }
+    }
+    button {
+        border:0;
+        color: var(--pink);
+        background: transparent;
+        font-size: 1.125rem;
+        line-height: 1.375rem;
+        margin-top: 4.125rem;
+        font-weight: 600;
+    }
+}

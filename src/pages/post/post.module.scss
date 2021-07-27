@@ -1,0 +1,94 @@
+.container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: calc(100vh - 5rem);
+}
+
+.banner {
+    width: 100%;
+    max-height: 440px;
+}
+
+.post {
+    .postTitle {
+        margin-top: 5rem;
+        font-size: 3rem;
+        font-weight: 600;
+    }
+
+    .info {
+        display: flex;
+        flex-wrap: wrap;
+        gap:1.5rem;
+
+        span {
+            margin-top: 1.5625rem;
+            color: var(--gray-400);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+
+            svg  {
+                font-size: 1rem;
+                margin-right: 0.5rem;
+            }
+
+            .editTime {
+                font-style: italic;
+            }
+
+            &:last-child {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+    }
+
+    .content {
+        margin-top: 4.125rem;
+        text-align: justify;
+        
+        .heading {
+            color: var(--white);
+            font-size: 2.25rem;
+            font-weight: 600;
+        }
+
+        .body {
+            color: var(--gray-300);
+            font-size: 1.125rem;
+            margin-top: 2rem;
+
+            p {
+                line-height: 1.563rem;
+                margin-top:2rem;
+            }
+        }
+    }
+}
+
+.postsNav {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 3rem 0 5rem 0;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(215,215,215, 0.1);
+
+    div {
+        span {
+            color:var(--white);
+            font-weight: 400;
+            font-size: 1.125rem;
+            max-width: 30%;
+        }
+        
+        a {
+            color: var(--pink);
+            display: block;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+    }
+}
