@@ -6,7 +6,6 @@ import Prismic from '@prismicio/client';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import Head from 'next/head';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
@@ -42,16 +41,12 @@ interface Post {
     } | null;
 }
 
-interface FormattedNavPosts {
-    uid: string;
-    title: string;
-}
-
 interface PostProps {
     post: Post;
+    preview: boolean,
 }
 
-export default function Post({post}: PostProps) {
+export default function Post({post, preview}: PostProps): JSX.Element {
     const router = useRouter()
     let edit:boolean = false;
 
@@ -144,6 +139,13 @@ export default function Post({post}: PostProps) {
                 </div>
                 <Comments />
                 <div id="inject-comments-for-uterances"></div>
+                {preview && (
+                    <aside>
+                        <Link href="/api/exit-preview">
+                        <a>Sair do modo Preview</a>
+                        </Link>
+                    </aside>
+                )}
             </main>
         </>
     )
@@ -175,10 +177,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<PostProps> = async ({ 
+    params, 
+    preview = false,
+    previewData,
+}) => {
     const { slug } = params;
     const prismic = getPrismicClient();
-    const response = await prismic.getByUID('post', String(slug), {});
+    const response = await prismic.getByUID('post', String(slug), {
+        ref: previewData?.ref ?? null,
+    });
 
     const nextPosts = await prismic.query(
         Prismic.predicates.at('document.type', 'post'),
@@ -186,6 +194,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             pageSize: 1,
             after: response?.id,
             orderings: '[document.first_publication_date desc]',
+            ref: previewData?.ref ?? null,
         }
     );
 
@@ -195,11 +204,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             pageSize: 1,
             after: response?.id,
             orderings: '[document.first_publication_date]',
+            ref: previewData?.ref ?? null,
         }
     )
-
-    // const nextPost = nextPosts.results[0] !== undefined ? nextPosts.results[0] : null;
-    // const prevPost = prevPosts.results[0] !== undefined ? prevPosts.results[0] : null;
 
     const post = {
         first_publication_date: response.first_publication_date,
@@ -225,24 +232,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         },
     };
 
-    // const formattedNextPost: FormattedNavPosts = {
-    //     uid: nextPosts.results[0].uid,
-    //     title: nextPosts.results[0].data.title
-    // }
-
-    // const formattedPrevPost: FormattedNavPosts = {
-    //     uid: prevPosts.results[0].uid,
-    //     title: prevPosts.results[0].data.title
-    // }
-
-    // const nextPost = formatNextPost.formattedNextPost.id !== post.uid ?  || null
-    // const prevPost = prevPosts.results[0].uid !== post.uid ? prevPosts.results[0] : null;
-
-    // console.log(nextPost.type);
-
     return {
         props: {
             post,
+            preview,
         },
         revalidate: 60 * 60 //1 hora
     }
